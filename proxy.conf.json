@@ -1,0 +1,15 @@
+{
+  "/v1/chat/completions": {
+    "target": "http://localhost:1234",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/v1/models": {
+    "target": "http://localhost:1234",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
+

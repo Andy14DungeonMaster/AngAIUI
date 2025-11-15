@@ -1,0 +1,46 @@
+<div #messagesContainer class="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+  <div *ngFor="let message of messages" class="flex" [ngClass]="message.role === 'user' ? 'justify-end' : 'justify-start'">
+    <div class="flex items-start gap-3 max-w-3xl" [ngClass]="message.role === 'user' ? 'flex-row-reverse' : 'flex-row'">
+      <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium"
+           [ngClass]="message.role === 'user' ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-700'">
+        {{ message.role === 'user' ? 'U' : 'AI' }}
+      </div>
+      <div class="flex flex-col gap-1" [ngClass]="message.role === 'user' ? 'items-end' : 'items-start'">
+        <div class="rounded-2xl px-4 py-2.5 max-w-full break-words"
+             [ngClass]="message.role === 'user' 
+               ? 'bg-green-500 text-white rounded-br-sm' 
+               : 'bg-gray-200 text-gray-900 rounded-bl-sm'">
+          <p class="text-sm whitespace-pre-wrap">{{ message.content }}</p>
+        </div>
+        <span class="text-xs text-gray-500 px-1">{{ formatTimestamp(message.timestamp) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="flex justify-start">
+    <div class="flex items-start gap-3 max-w-3xl">
+      <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-300 text-gray-700 flex items-center justify-center text-sm font-medium">
+        AI
+      </div>
+      <div class="flex flex-col gap-1 items-start">
+        <div class="rounded-2xl px-4 py-2.5 bg-gray-200 text-gray-900 rounded-bl-sm">
+          <div class="flex gap-1">
+            <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+            <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+            <div class="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="messages.length === 0 && !isLoading" class="flex items-center justify-center h-full">
+    <div class="text-center text-gray-500">
+      <p class="text-lg font-medium mb-2">Start a conversation</p>
+      <p class="text-sm">Send a message to begin chatting with AI</p>
+    </div>
+  </div>
+</div>
+

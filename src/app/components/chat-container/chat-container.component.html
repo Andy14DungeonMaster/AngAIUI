@@ -1,0 +1,73 @@
+<div class="flex h-screen bg-gray-50">
+  <!-- Sidebar -->
+  <aside [class]="'bg-gray-900 text-white transition-all duration-300 ' + (sidebarOpen ? 'w-64' : 'w-0 overflow-hidden')">
+    <div class="h-full flex flex-col">
+      <!-- Sidebar Header -->
+      <div class="p-4 border-b border-gray-700">
+        <button
+          (click)="createNewConversation()"
+          class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors duration-200 flex items-center gap-2 justify-center"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          <span>New Chat</span>
+        </button>
+      </div>
+
+      <!-- Conversations List -->
+      <div class="flex-1 overflow-y-auto p-2">
+        <div class="space-y-1">
+          <div
+            *ngFor="let conversation of conversations"
+            (click)="selectConversation(conversation)"
+            [class]="'p-3 rounded-lg cursor-pointer transition-colors duration-200 flex items-center justify-between group ' +
+              (currentConversation?.id === conversation.id ? 'bg-gray-800' : 'hover:bg-gray-800')"
+          >
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium truncate">{{ conversation.title }}</p>
+              <p class="text-xs text-gray-400 mt-1">
+                {{ conversation.messages.length }} messages
+              </p>
+            </div>
+            <button
+              (click)="deleteConversation(conversation.id, $event)"
+              class="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-700 rounded"
+              title="Delete conversation"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Chat Area -->
+  <div class="flex-1 flex flex-col">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <button
+          (click)="toggleSidebar()"
+          class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          title="Toggle sidebar"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        <h1 class="text-lg font-semibold text-gray-900">AI Chat</h1>
+      </div>
+    </header>
+
+    <!-- Messages Area -->
+    <app-chat-messages [messages]="messages" [isLoading]="isLoading"></app-chat-messages>
+
+    <!-- Input Area -->
+    <app-chat-input (sendMessage)="onSendMessage($event)"></app-chat-input>
+  </div>
+</div>
+
